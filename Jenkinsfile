@@ -1,9 +1,3 @@
-#!/usr/bin/env groovy
-
-properties([
-    buildDiscarder(logRotator(numToKeepStr: '5', artifactNumToKeepStr: '5')),
-    pipelineTriggers([[$class:"SCMTrigger", scmpoll_spec:"H/15 * * * *"]]),
-])
 node('image docker'){
     
     def app 
