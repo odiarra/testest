@@ -1,4 +1,4 @@
-	node('image docker'){
+node('image docker'){
     
     def app 
 
@@ -15,6 +15,8 @@
     	docker.withRegistry('https://hub.docker.com/', 'dockerr-hub-credentials') {
         	app.push("${env.BUILD_NUMBER}")
             app.push("latest")
+        }
+
    }  
         
     stage('test container'){
