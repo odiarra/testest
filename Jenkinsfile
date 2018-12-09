@@ -1,11 +1,14 @@
-node('image docker'){
-    
-    def app 
-
+def workspace;
+node(){
     stage('Clone repository'){
         
-        checkout scm   
-    }        
+		checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github', url: 'https://github.com/odiarra/testest.git']]])
+    }  
+    stage('Build image'){ 
+		echo "Build the image"     
+        def image = docker.build('odiarra/testest')  
+    } 
+          
     stage('Build image'){ 
             
         app = docker.build('odiarra/testest')  
@@ -16,7 +19,6 @@ node('image docker'){
         	app.push("${env.BUILD_NUMBER}")
             app.push("latest")
         }
-
    }  
         
     stage('test container'){
