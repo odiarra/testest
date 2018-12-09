@@ -1,18 +1,19 @@
 def workspace;
 node(){
+    def image;
     stage('Clone repository'){
         
-	checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github', url: 'https://github.com/odiarra/testest.git']]])
+    	checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github', url: 'https://github.com/odiarra/testest.git']]])
     }  
     stage('Build image'){ 
 	echo "Build the image"     
-        def image = docker.build('odiarra/testest')  
+    	image = docker.build('odiarra/testest')  
     } 
     stage('Push image') {
     
     	docker.withRegistry('https://hub.docker.com/', 'dockerr-hub-credentials') {
-	app.push("${env.BUILD_NUMBER}")
-        app.push("latest")
+	image.push("${env.BUILD_NUMBER}")
+        image.push("latest")
         }
    }  
         
